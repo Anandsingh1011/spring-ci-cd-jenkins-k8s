@@ -14,7 +14,7 @@
 	<name>spring-ci-cd-jenkins-k8s</name>
 	<description>Demo project for Spring Boot With CI-CD Jenkins</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
