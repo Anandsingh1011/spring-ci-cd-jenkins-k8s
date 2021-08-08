@@ -46,6 +46,7 @@ spec:
     tty: true
 """
 }
+  }
     
   tools {
         maven 'Maven 3.5.0'
