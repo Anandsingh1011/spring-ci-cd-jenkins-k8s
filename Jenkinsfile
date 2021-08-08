@@ -29,7 +29,7 @@ spec:
     command:
     - cat
     tty: true
-  - name: openjdk:11
+  - name: openjdk
     image: openjdk:11
     command:
     - cat
