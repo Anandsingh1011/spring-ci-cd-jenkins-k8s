@@ -2,7 +2,7 @@ pipeline {
 
   environment {
     PROJECT = "kf-gcp12449"
-    APP_NAME = "gceme"
+    APP_NAME = "spring-ci-cd-jenkins-k8s"
     FE_SVC_NAME = "${APP_NAME}-frontend"
     CLUSTER = "jenkins-cd"
     CLUSTER_ZONE = "us-east1-d"
