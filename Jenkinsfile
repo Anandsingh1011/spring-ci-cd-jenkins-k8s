@@ -10,10 +10,45 @@ pipeline {
     JENKINS_CRED = "${PROJECT}"
   }
 
-  agent any
+  agent {
+    kubernetes {
+      label 'pring-ci-cd-jenkins-k8s'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: cd-jenkins
+  containers:
+  - name: golang
+    image: golang:1.10
+    command:
+    - cat
+    tty: true
+  - name: openjdk:11
+    image: openjdk:11
+    command:
+    - cat
+    tty: true
+  - name: gcloud
+    image: gcr.io/cloud-builders/gcloud
+    command:
+    - cat
+    tty: true
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl
+    command:
+    - cat
+    tty: true
+"""
+}
+    
   tools {
         maven 'Maven 3.5.0'
-        jdk 'jdk8'
    }
   
   stages {
