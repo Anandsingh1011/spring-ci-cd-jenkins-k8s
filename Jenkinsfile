@@ -13,18 +13,25 @@ pipeline {
   agent any
   
   stages {
-    stage('Checkout') {
-      echo 'Checkout application...'
+    stage("init") {
+            steps {
+                echo 'Checkout application...'
+            }
     }
-    stage('Test ') {
-      echo 'Test application...'
+    stage("build") {
+            steps {
+                echo 'build application...'
+            }
     }
-    stage('Build ') {
-      echo 'Build application...'
+    stage("test") {
+            steps {
+                echo 'test application...'
+            }
     }
-    
-    stage('push image') {
-      echo 'Push application image...'
+    stage("deploy") {
+            steps {
+                echo 'deploy application...'
+            }
     }
   }
 }
