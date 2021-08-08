@@ -70,7 +70,8 @@ spec:
     }
     stage("test") {
             steps {
-                echo 'test application...'
+                echo 'build image ...'
+                sh 'docker build --tag spring-ci-cd-jenkins-k8s:1 .'
             }
     }
     stage("deploy") {
