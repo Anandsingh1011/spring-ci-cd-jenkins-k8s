@@ -73,7 +73,7 @@ spec:
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
     }
-    stage('Build image') {
+    stage("Build image") {
       steps {
         app = docker.build("gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s:1")
       }
