@@ -74,7 +74,9 @@ spec:
             }
     }
     stage('Build image') {
-      app = docker.build("gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s:1")
+      steps {
+        app = docker.build("gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s:1")
+      }
     }
     stage("test") {
             steps {
