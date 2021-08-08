@@ -73,14 +73,14 @@ spec:
                 sh 'mvn -Dmaven.test.failure.ignore=true install'
             }
     }
-    stage("Build image") {
+    stage('Build and push image with Container Builder') {
       steps {
-        script {
-          docker.build("gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s:1")
+        container('gcloud') {
+          sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${IMAGE_TAG} ."
         }
-        
       }
     }
+
     stage("test") {
             steps {
                 echo 'build image ...'
