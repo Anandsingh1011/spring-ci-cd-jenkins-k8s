@@ -15,19 +15,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins-integration-samples-gke
+  name: spring-ci-cd-jenkins-k8s
 spec:
   selector:
     matchLabels:
-      app: jenkins-integration-samples-gke
+      app: spring-ci-cd-jenkins-k8s
   replicas: 2
   template:
     metadata:
       labels:
-        app: jenkins-integration-samples-gke
+        app: spring-ci-cd-jenkins-k8s
     spec:
       containers:
-      - name: jenkins-integration-samples-gke
+      - name: spring-ci-cd-jenkins-k8s
         image: IMAGE
         ports:
         - containerPort: 80
