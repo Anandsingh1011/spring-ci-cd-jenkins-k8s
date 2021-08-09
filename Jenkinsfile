@@ -15,6 +15,7 @@ pipeline {
     BUILD_CONTEXT_BUCKET = "kf-gcp12449_cloudbuild"
     BUILD_CONTEXT = "build-context-${BUILD_ID}.tar.gz"
     GCR_IMAGE = "gcr.io/${PROJECT_ID}/${APP_NAME}:${BUILD_ID}"
+    JENK_INT_IT_CRED_ID = "${PROJECT}"
   }
 
   agent none
@@ -45,7 +46,7 @@ pipeline {
                       // archive the build context for kaniko			    
                        sh "tar --exclude='./.git' -zcvf /tmp/$BUILD_CONTEXT ."
                        sh "mv /tmp/$BUILD_CONTEXT ."
-                       step([$class: 'ClassicUploadStep', credentialsId: env.JENK_INT_IT_CRED_ID, bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
+                       step([$class: 'ClassicUploadStep', credentialsId: $JENK_INT_IT_CRED_ID , bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
                     
 		      }
 	    }
