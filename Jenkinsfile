@@ -16,6 +16,7 @@ pipeline {
     BUILD_CONTEXT = "build-context-${BUILD_ID}.tar.gz"
     GCR_IMAGE = "gcr.io/${PROJECT_ID}/${APP_NAME}:${BUILD_ID}"
     JENK_INT_IT_CRED_ID = "${PROJECT}"
+    PROD_CLUSTER = "jenkins-cd"
   }
 
   agent none
@@ -69,6 +70,21 @@ pipeline {
 		    '''
 		}
 	    }
-	}  
+	}
+	  stage("Deploy to Prod") {
+            agent {
+    	        kubernetes {
+      		    cloud 'kubernetes'
+      		    label 'gke-deploy'
+		    yamlFile 'jenkins/gke-deploy-pod.yaml'
+		}
+            }
+	    steps{
+		container('gke-deploy') {
+		    sh "sed -i s#IMAGE#${GCR_IMAGE}#g kubernetes/manifest.yaml"
+                    step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.PROD_CLUSTER, location: env.PROJECT_ZONE, manifestPattern: 'kubernetes/manifest.yaml', credentialsId: env.JENK_INT_IT_CRED_ID, verifyDeployments: true])
+		}
+            }
+	}
   }
 }
