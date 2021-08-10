@@ -63,8 +63,8 @@ pipeline {
 	    }
 	    steps {
 	    	container('tools') {
-		     sh "git config user.email "anandsingh1011@gmail.com"
-		     sh "git config user.name "Anand Singh""
+		     sh "git config user.email 'anandsingh1011@gmail.com'"
+		     sh "git config user.name 'Anand Singh'"
 		     
                      sh "ls -ltr"
 	             sh "git status"	
