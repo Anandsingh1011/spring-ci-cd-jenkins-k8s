@@ -28,6 +28,6 @@ spec:
     spec:
       containers:
       - name: spring-ci-cd-jenkins-k8s
-        image: IMAGE
+        image: gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s:39
         ports:
         - containerPort: 80
