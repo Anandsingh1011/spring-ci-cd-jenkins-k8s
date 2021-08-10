@@ -64,8 +64,9 @@ pipeline {
 	    steps {
 	    	container('tools') {
                      sh "ls -ltr"
-	             sh "git status"		
-                     sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/alexmt/argocd-demo-deploy.git"
+	             sh "git status"	
+		     sh "cd kubernetes/prod && kustomize edit set image alexmt/argocd-demo:${GCR_IMAGE}"
+                     sh "git commit -am 'Publish new version' && git push || echo 'no changes'"
           	     
 		       
 		 }
