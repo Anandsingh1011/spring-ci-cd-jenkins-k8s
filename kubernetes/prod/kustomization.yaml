@@ -1,0 +1,5 @@
+bases:
+  - ../base
+images:
+- name: gcr.io/kf-gcp12449/spring-ci-cd-jenkins-k8s
+  newTag: 1.0.1
