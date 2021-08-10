@@ -28,6 +28,6 @@ spec:
     spec:
       containers:
       - name: spring-ci-cd-jenkins-k8s
-        image: 39
+        image: IMAGE
         ports:
         - containerPort: 80
