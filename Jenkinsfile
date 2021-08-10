@@ -53,7 +53,7 @@ pipeline {
 		      }
 	    }
 	}
-	stage("Build and test") {
+	stage("Update Image") {
 	    agent {
     	    	kubernetes {
       		    cloud 'kubernetes'
