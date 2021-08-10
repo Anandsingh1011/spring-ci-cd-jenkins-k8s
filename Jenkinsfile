@@ -56,10 +56,10 @@ pipeline {
 	  stage("Update Image and Push to git") {
             
 	    steps{
-		container('gke-deploy') {
+		
 		    sh "sed -i s#IMAGE#${GCR_IMAGE}#g kubernetes/manifest.yaml"
                     sh "git status"
-		}
+		
 	    }
 	}
 	  
