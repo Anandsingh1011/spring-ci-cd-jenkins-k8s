@@ -66,6 +66,9 @@ pipeline {
                      sh "ls -ltr"
 	             sh "git status"	
 		     sh "cd kubernetes/prod && kustomize edit set image alexmt/argocd-demo:${GCR_IMAGE}"
+		     sh "git status"
+		     sh "ls -ltr"
+		     sh "cat kustomization.yaml"
                      sh "git commit -am 'Publish new version' && git push || echo 'no changes'"
           	     
 		       
