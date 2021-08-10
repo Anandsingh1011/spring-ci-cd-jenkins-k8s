@@ -49,10 +49,27 @@ pipeline {
                        sh "mv /tmp/$BUILD_CONTEXT ."
 		       step([$class: 'ClassicUploadStep', credentialsId: "${JENK_INT_IT_CRED_ID}" , bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
                        sh "sed -i s#IMAGE#${GCR_IMAGE}#g kubernetes/manifest.yaml"
-		       sh "git status"
+		       
 		      }
 	    }
 	}
-
-  	}
+	stage("Build and test") {
+	    agent {
+    	    	kubernetes {
+      		    cloud 'kubernetes'
+      		    label 'tool-pod'
+      		    yamlFile 'jenkins/tool-pod.yaml'
+		}
+	    }
+	    steps {
+	    	container('tools') {
+                     sh "ls -ltr"
+	             sh "git status"		
+                     sh "git clone https://$GIT_CREDS_USR:$GIT_CREDS_PSW@github.com/alexmt/argocd-demo-deploy.git"
+          	     
+		       
+		 }
+	    }
+	}
+     }
 }
