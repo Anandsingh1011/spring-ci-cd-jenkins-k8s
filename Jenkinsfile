@@ -65,7 +65,7 @@ pipeline {
 	    	container('tools') {
                      sh "ls -ltr"
 	             sh "git status"	
-		     sh "cd kubernetes/prod && kustomize edit set image alexmt/argocd-demo:${GCR_IMAGE}"
+		     sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
 		     sh "git status"
 		     sh "ls -ltr"
 		     sh "cat kubernetes/prod/kustomization.yaml"
