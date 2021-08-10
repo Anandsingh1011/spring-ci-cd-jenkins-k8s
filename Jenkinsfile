@@ -47,22 +47,12 @@ pipeline {
                       // archive the build context for kaniko			    
                        sh "tar --exclude='./.git' -zcvf /tmp/$BUILD_CONTEXT ."
                        sh "mv /tmp/$BUILD_CONTEXT ."
-			step([$class: 'ClassicUploadStep', credentialsId: "${JENK_INT_IT_CRED_ID}" , bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
-                    
+		       step([$class: 'ClassicUploadStep', credentialsId: "${JENK_INT_IT_CRED_ID}" , bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
+                       sh "sed -i s#IMAGE#${GCR_IMAGE}#g kubernetes/manifest.yaml"
+		       sh "git status"
 		      }
 	    }
 	}
-	
-	  stage("Update Image and Push to git") {
-            
-	    steps{
-		
-		    sh "sed -i s#IMAGE#${GCR_IMAGE}#g kubernetes/manifest.yaml"
-                    sh "git status"
-		
-	    }
-	}
-	  
-	 
+
   	}
 }
