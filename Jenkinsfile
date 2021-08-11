@@ -63,8 +63,10 @@ pipeline {
 	    }
 	    steps {
 	    	container('tools') {
-		     sh "git config user.email 'anandsingh1011@gmail.com'"
-		     sh "git config user.name 'anandsingh1011'"
+			
+		     sh "git clone https://anandsingh1011:$JenkinsArgoCD@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
+		     sh "git config --global user.email 'anandsingh1011@gmail.com'"
+		     
 		     
                      sh "ls -ltr"
 	             sh "git status"	
