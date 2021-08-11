@@ -63,7 +63,7 @@ pipeline {
         steps {
             git branch: 'main',
                 credentialsId: '${env.JenkinsArgoCD}',
-                url: 'ssh://git@github.com:Anandsingh1011/spring-ci-cd-jenkins-k8s.git'
+                url: 'git@github.com:Anandsingh1011/spring-ci-cd-jenkins-k8s.git'
 
             sh "ls -lat"
             dir("spring-ci-cd-jenkins-k8s"){
