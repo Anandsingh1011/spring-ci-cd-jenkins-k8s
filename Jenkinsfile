@@ -73,7 +73,8 @@ pipeline {
 		     sh "ls -ltr"
 		     sh "cat kubernetes/prod/kustomization.yaml"
 		     sh "git status"
-                     sh "git commit -am 'Publish new version'"
+		     sh "git add kubernetes/prod/kustomization.yaml"
+                     sh "git commit -m 'Publish new version'"
           	     sh "git status && git push origin HEAD:main || echo 'no changes'"
 		       
 		 }
