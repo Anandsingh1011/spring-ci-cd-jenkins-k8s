@@ -60,7 +60,8 @@ pipeline {
       }
       steps {
         container('tools') {
-
+          sh "mkdir -p /home/jenkins/agent/delme && cd /home/jenkins/agent/delme"
+          
           sh "pwd"
           sh "ls -ltr"
           sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
