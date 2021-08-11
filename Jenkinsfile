@@ -32,7 +32,7 @@ pipeline {
 		}
 	    }
 	    stage("tag the commit with datetime") {
-		  withCredentials([usernamePassword(credentialsId: ${env.JenkinsArgoCD} usernameVariable: Anandsingh1011 , passwordVariable: 'GIT_PASSWORD')]) {
+		  withCredentials([usernamePassword(credentialsId: '${env.JenkinsArgoCD}' usernameVariable: 'Anandsingh1011' , passwordVariable: 'GIT_PASSWORD')]) {
 
 		  // use date for tag
 		  def tag = new Date().format("yyyyMMddHHmm")
