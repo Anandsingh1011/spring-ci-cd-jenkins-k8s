@@ -53,6 +53,13 @@ pipeline {
     
     
     stage('Checkout external proj') {
+        agent {
+          kubernetes {
+            cloud 'kubernetes'
+            label 'tool-pod'
+            yamlFile 'jenkins/tool-pod.yaml'
+          }
+        }
         steps {
             git branch: 'main',
                 credentialsId: '${env.JenkinsArgoCD}',
