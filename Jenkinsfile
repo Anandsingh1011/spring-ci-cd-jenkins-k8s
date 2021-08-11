@@ -61,22 +61,22 @@ pipeline {
       steps {
         container('tools') {
           sh "mkdir -p /home/jenkins/agent/delme && cd /home/jenkins/agent/delme"
-          
-          sh "pwd"
-          sh "ls -ltr"
-          sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
-          sh "git checkout -b main"
-          sh "git config --global user.email 'anandsingh1011@gmail.com'"
-          sh "git branch"
-          sh "cd spring-ci-cd-jenkins-k8s/kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
-          sh "pwd"
-          sh "ls -ltr"
-          sh "cat kubernetes/prod/kustomization.yaml"
-          sh "git status"
-          sh "git add kubernetes/prod/kustomization.yaml"
-          sh "git commit -m 'Publish new version'"
-          sh "git status && git push origin HEAD:main || echo 'no changes'"
-
+          dir("/home/jenkins/agent/delme"){
+            sh "pwd"
+            sh "ls -ltr"
+            sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
+            sh "git checkout -b main"
+            sh "git config --global user.email 'anandsingh1011@gmail.com'"
+            sh "git branch"
+            sh "cd spring-ci-cd-jenkins-k8s/kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
+            sh "pwd"
+            sh "ls -ltr"
+            sh "cat kubernetes/prod/kustomization.yaml"
+            sh "git status"
+            sh "git add kubernetes/prod/kustomization.yaml"
+            sh "git commit -m 'Publish new version'"
+            sh "git status && git push origin HEAD:main || echo 'no changes'"
+          }
         }
       }
     }
