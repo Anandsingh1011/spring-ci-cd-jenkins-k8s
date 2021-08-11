@@ -52,33 +52,7 @@ pipeline {
     }
     
     
-    stage('Checkout external proj') {
-        agent {
-          kubernetes {
-            cloud 'kubernetes'
-            label 'tool-pod'
-            yamlFile 'jenkins/tool-pod.yaml'
-          }
-        }
-        steps {
-            git branch: 'main',
-                credentialsId: env.JenkinsArgoCD,
-                url: 'git@github.com:Anandsingh1011/spring-ci-cd-jenkins-k8s.git'
-
-            sh "ls -lat"
-            dir("spring-ci-cd-jenkins-k8s"){
-              sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
-              sh "pwd"
-              sh "ls -ltr"
-              sh "cat kubernetes/prod/kustomization.yaml"
-              sh "git status"
-              sh "git add . "
-              // sh "git add kubernetes/prod/kustomization.yaml"
-              sh "git commit -m 'Publish new version'"
-              sh "git status && git push || echo 'no changes'"
-          }
-        }
-    }
+    
     
     
     
