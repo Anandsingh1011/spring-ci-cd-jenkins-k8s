@@ -73,6 +73,8 @@ pipeline {
             sh "git clone https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
             sh "git checkout -b main"
             sh "git config --global user.email 'anandsingh1011@gmail.com'"
+            sh "git remote add origin https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
+            
             sh "git branch"
             dir("spring-ci-cd-jenkins-k8s"){
               sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
@@ -83,7 +85,8 @@ pipeline {
               sh "git add . "
               // sh "git add kubernetes/prod/kustomization.yaml"
               sh "git commit -m 'Publish new version'"
-              sh "git status && git push || echo 'no changes'"
+              sh "git push --set-upstream origin main"
+              // sh "git status && git push || echo 'no changes'"
           }
         }
       }
