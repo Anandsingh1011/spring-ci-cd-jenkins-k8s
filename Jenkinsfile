@@ -69,7 +69,7 @@ pipeline {
             sh "git config --global user.email 'anandsingh1011@gmail.com'"
             sh "git branch"
             dir("spring-ci-cd-jenkins-k8s"){
-              sh "cd spring-ci-cd-jenkins-k8s/kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
+              sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
               sh "pwd"
               sh "ls -ltr"
               sh "cat kubernetes/prod/kustomization.yaml"
