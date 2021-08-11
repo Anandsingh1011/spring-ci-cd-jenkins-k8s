@@ -72,8 +72,10 @@ pipeline {
 	             sh "git status"	
 		     sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
 		     sh "git status"
+		     sh "pwd"
 		     sh "ls -ltr"
 		     sh "cat kubernetes/prod/kustomization.yaml"
+		     sh "git status"
                      sh "git commit -am 'Publish new version' && git push origin HEAD:master || echo 'no changes'"
           	     
 		       
