@@ -28,13 +28,13 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: '${env.JenkinsArgoCD}', usernameVariable: 'Anandsingh1011', passwordVariable: 'GIT_PASSWORD')]) {
 
           // use date for tag
-          def tag = new Date().format("yyyyMMddHHmm")
+          // def tag = new Date().format("yyyyMMddHHmm")
 
           // configure the git credentials, these are cached in RAM for several minutes to use
           // this is required until https://issues.jenkins-ci.org/browse/JENKINS-28335 is resolved upstream
           sh "echo 'protocol=https\nhost=<git-host-goes-here>\nusername=${GIT_USERNAME}\npassword=${GIT_PASSWORD}\n\n' | git credential approve "
 
-          sh "git tag -a ${tag} -m '${USER} tagging'"
+          sh "git tag -a ${BUILD_ID} -m '${BUILD_ID} tagging'"
           sh "git push --tags"
         }
       }
