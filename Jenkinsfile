@@ -64,9 +64,9 @@ pipeline {
 	    steps {
 	    	container('tools') {
 			
-			sh "git clone https://anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
+		     sh "git clone https://anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b master"
 		     sh "git config --global user.email 'anandsingh1011@gmail.com'"
-		     	
+		     sh "git branch"
 		     sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
 		     sh "pwd"
 		     sh "ls -ltr"
