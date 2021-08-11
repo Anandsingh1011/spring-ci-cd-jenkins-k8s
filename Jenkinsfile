@@ -76,7 +76,7 @@ pipeline {
             // sh "git remote add origin https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
             
             sh "git branch"
-            dir("spring-ci-cd-jenkins-k8s"){
+            //dir("spring-ci-cd-jenkins-k8s"){
               sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
               sh "pwd"
               sh "ls -ltr"
@@ -87,7 +87,7 @@ pipeline {
               sh "git commit -m 'Publish new version'"
               sh "git push --set-upstream origin main"
               // sh "git status && git push || echo 'no changes'"
-          }
+          //}
         }
       }
     }
