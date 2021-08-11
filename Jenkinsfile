@@ -64,7 +64,7 @@ pipeline {
 	    steps {
 	    	container('tools') {
 			
-		     sh "git clone https://anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b master"
+		     sh "git clone https://anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
 		     sh "git config --global user.email 'anandsingh1011@gmail.com'"
 		     sh "git branch"
 		     sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
@@ -73,7 +73,7 @@ pipeline {
 		     sh "cat kubernetes/prod/kustomization.yaml"
 		     sh "git status"
                      sh "git commit -am 'Publish new version'"
-          	     sh "git status && git push origin HEAD:master || echo 'no changes'"
+          	     sh "git status && git push origin HEAD:main || echo 'no changes'"
 		       
 		 }
 	    }
