@@ -23,15 +23,7 @@ pipeline {
     
   stages {
       
-	stage("Update Image") {
-	    agent {
-    	    	kubernetes {
-      		    cloud 'kubernetes'
-      		    label 'tool-pod'
-      		    yamlFile 'jenkins/tool-pod.yaml'
-		}
-	    }
-	    stage("tag the commit with datetime") {
+	  stage("tag the commit with datetime") {
 		  withCredentials([usernamePassword(credentialsId: '${env.JenkinsArgoCD}', usernameVariable: 'Anandsingh1011' , passwordVariable: 'GIT_PASSWORD')]) {
 
 		  // use date for tag
@@ -45,6 +37,15 @@ pipeline {
 		  sh "git push --tags"
 		  }
 		}
+	stage("Update Image") {
+	    agent {
+    	    	kubernetes {
+      		    cloud 'kubernetes'
+      		    label 'tool-pod'
+      		    yamlFile 'jenkins/tool-pod.yaml'
+		}
+	    }
+	    
 	    steps {
 	    	container('tools') {
 		     
