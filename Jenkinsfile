@@ -21,38 +21,8 @@ pipeline {
 
   agent none
     
-  
-  
   stages {
-      stage("Build and test") {
-	    agent {
-    	    	kubernetes {
-      		    cloud 'kubernetes'
-      		    label 'maven-pod'
-      		    yamlFile 'jenkins/maven-pod.yaml'
-		}
-	    }
-	    steps {
-	    	container('maven') {
-               
-                      // build
-                      sh "mvn clean package"
-
-                      // run tests
-                      // sh "mvn verify"
-
-                      // bundle the generated artifact    
-                      sh "cp target/${APP_NAME}-*.jar $APP_JAR"
-
-                      // archive the build context for kaniko			    
-                       sh "tar --exclude='./.git' -zcvf /tmp/$BUILD_CONTEXT ."
-                       sh "mv /tmp/$BUILD_CONTEXT ."
-		       step([$class: 'ClassicUploadStep', credentialsId: "${JENK_INT_IT_CRED_ID}" , bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
-                       
-		       
-		      }
-	    }
-	}
+      
 	stage("Update Image") {
 	    agent {
     	    	kubernetes {
@@ -61,10 +31,24 @@ pipeline {
       		    yamlFile 'jenkins/tool-pod.yaml'
 		}
 	    }
+	    stage("tag the commit with datetime") {
+		  withCredentials([usernamePassword(credentialsId: ${env.JenkinsArgoCD} usernameVariable: Anandsingh1011 , passwordVariable: 'GIT_PASSWORD')]) {
+
+		  // use date for tag
+		  def tag = new Date().format("yyyyMMddHHmm")
+
+		  // configure the git credentials, these are cached in RAM for several minutes to use
+		  // this is required until https://issues.jenkins-ci.org/browse/JENKINS-28335 is resolved upstream
+		  sh "echo 'protocol=https\nhost=<git-host-goes-here>\nusername=${GIT_USERNAME}\npassword=${GIT_PASSWORD}\n\n' | git credential approve "
+
+		  sh "git tag -a ${tag} -m '${USER} tagging'"
+		  sh "git push --tags"
+		  }
+		}
 	    steps {
 	    	container('tools') {
-			
-		     sh "git clone https://anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
+		     
+		     sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
 		     sh "git checkout -b main"
 		     sh "git config --global user.email 'anandsingh1011@gmail.com'"
 		     sh "git branch"
