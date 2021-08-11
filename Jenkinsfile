@@ -22,49 +22,58 @@ pipeline {
   agent none
 
   stages {
-
-    stage("tag the commit with datetime") {
-      steps {
-        withCredentials([usernamePassword(credentialsId: '${env.JenkinsArgoCD}', usernameVariable: 'Anandsingh1011', passwordVariable: 'GIT_PASSWORD')]) {
-
-          // use date for tag
-          // def tag = new Date().format("yyyyMMddHHmm")
-
-          // configure the git credentials, these are cached in RAM for several minutes to use
-          // this is required until https://issues.jenkins-ci.org/browse/JENKINS-28335 is resolved upstream
-          sh "echo 'protocol=https\nhost=<git-host-goes-here>\nusername=${GIT_USERNAME}\npassword=${GIT_PASSWORD}\n\n' | git credential approve "
-
-          sh "git tag -a ${BUILD_ID} -m '${BUILD_ID} tagging'"
-          sh "git push --tags"
+    stage("Build and test") {
+      agent {
+        kubernetes {
+          cloud 'kubernetes'
+          label 'maven-pod'
+          yamlFile 'jenkins/maven-pod.yaml'
         }
       }
+      steps {
+        container('maven') {
 
-      stage("Update Image") {
-        agent {
-          kubernetes {
-            cloud 'kubernetes'
-            label 'tool-pod'
-            yamlFile 'jenkins/tool-pod.yaml'
-          }
+          // build
+          sh "mvn clean package"
+
+          // run tests
+          // sh "mvn verify"
+
+          // bundle the generated artifact    
+          sh "cp target/${APP_NAME}-*.jar $APP_JAR"
+
+          // archive the build context for kaniko			    
+          sh "tar --exclude='./.git' -zcvf /tmp/$BUILD_CONTEXT ."
+          sh "mv /tmp/$BUILD_CONTEXT ."
+          step([$class: 'ClassicUploadStep', credentialsId: "${JENK_INT_IT_CRED_ID}", bucket: "gs://${BUILD_CONTEXT_BUCKET}", pattern: env.BUILD_CONTEXT])
+
         }
+      }
+    }
+    stage("Update Image") {
+      agent {
+        kubernetes {
+          cloud 'kubernetes'
+          label 'tool-pod'
+          yamlFile 'jenkins/tool-pod.yaml'
+        }
+      }
+      steps {
+        container('tools') {
 
-        steps {
-          container('tools') {
+          sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
+          sh "git checkout -b main"
+          sh "git config --global user.email 'anandsingh1011@gmail.com'"
+          sh "git branch"
+          sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
+          sh "pwd"
+          sh "ls -ltr"
+          sh "cat kubernetes/prod/kustomization.yaml"
+          sh "git status"
+          sh "git add kubernetes/prod/kustomization.yaml"
+          sh "git commit -m 'Publish new version'"
+          sh "git status && git push origin HEAD:main || echo 'no changes'"
 
-            sh "git clone https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
-            sh "git checkout -b main"
-            sh "git config --global user.email 'anandsingh1011@gmail.com'"
-            sh "git branch"
-            sh "cd kubernetes/prod && kustomize edit set image ${GCR_IMAGE}"
-            sh "pwd"
-            sh "ls -ltr"
-            sh "cat kubernetes/prod/kustomization.yaml"
-            sh "git status"
-            sh "git add kubernetes/prod/kustomization.yaml"
-            sh "git commit -m 'Publish new version'"
-            sh "git status && git push origin HEAD:main || echo 'no changes'"
-
-          }
         }
       }
     }
