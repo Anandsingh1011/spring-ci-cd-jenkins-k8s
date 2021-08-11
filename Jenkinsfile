@@ -70,7 +70,7 @@ pipeline {
           
             sh "pwd"
             sh "ls -ltr"
-            sh "git clone https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
+            // sh "git clone https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git -b main"
             sh "git checkout -b main"
             sh "git config --global user.email 'anandsingh1011@gmail.com'"
             // sh "git remote add origin https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
