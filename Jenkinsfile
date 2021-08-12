@@ -74,7 +74,7 @@ pipeline {
             sh "git checkout -b main"
             sh "git config --global user.email 'anandsingh1011@gmail.com'"
             // sh "git remote add origin https://github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
-             sh "git remote add origin https://Anandsingh1011:${env.JenkinsArgoCD}@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
+             sh "git remote set-url origin git@github.com/Anandsingh1011/spring-ci-cd-jenkins-k8s.git"
             
             sh "git branch"
             //dir("spring-ci-cd-jenkins-k8s"){
