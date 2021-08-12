@@ -86,7 +86,8 @@ pipeline {
               sh "git add . "
               // sh "git add kubernetes/prod/kustomization.yaml"
               sh "git commit -m 'Publish new version'"
-              sh "git push"
+              sh "git push -u origin head"
+          
               // sh "git push --set-upstream origin main"
               // sh "git status && git push || echo 'no changes'"
           //}
