@@ -85,7 +85,7 @@ pipeline {
               sh "git status && git show-ref"
               sh "git add . "
               // sh "git add kubernetes/prod/kustomization.yaml"
-              sh "git commit -m 'Publish new version' && git push -u origin head || echo 'no changes'"
+              sh "git commit -m 'Publish new version' && git push || echo 'no changes'"
               //sh "git commit -m 'Publish new version'"
               //sh "git push -u origin head"
           
