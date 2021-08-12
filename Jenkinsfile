@@ -82,10 +82,11 @@ pipeline {
               sh "pwd"
               sh "ls -ltr"
               sh "cat kubernetes/prod/kustomization.yaml"
-              sh "git status && git show-ref"
+              sh "git status && git show-ref && git remote -v"
               sh "git add . "
+              sh "git status && git show-ref && git remote -v"
               // sh "git add kubernetes/prod/kustomization.yaml"
-              sh "git commit -m 'Publish new version' && git push --set-upstream origin main || echo 'no changes'"
+              sh "git commit -m 'Publish new version' && git push origin main || echo 'no changes'"
               //sh "git commit -m 'Publish new version'"
               //sh "git push -u origin head"
           
